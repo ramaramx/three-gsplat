@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "gsplat-fork": "^0.2.11-fork",
-    "three": "^0.161.0",
+    "three": "^0.158.0",
     "vite-plugin-mkcert": "^1.17.3"
   }
 }

@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import * as SPLAT from "gsplat-fork";
 import * as THREE from "three";
 
@@ -18,8 +18,19 @@ const camera = new SPLAT.Camera(
 )
 const renderer = new SPLAT.WebGLRenderer();
 // remove background color from renderer
+renderer.domElement.style.background = "unset";
 renderer.setSize(window.innerWidth, window.innerHeight);
 
+async function convertPLYToSPLAT(url: string) {
+    // Load PLY file into scene
+    await SPLAT.PLYLoader.LoadAsync(url, scene, (progress:any) => {
+        console.log("Loading ply file: " + progress);
+    });
+    scene.rotate(new SPLAT.Quaternion(-1, 0, 0, 0))
+    scene.scale(new SPLAT.Vector3(12*scale, 12*scale, 12*scale))
+    // Scene.data is in SPLAT format
+    return scene.data;
+}
 
 function getXRSessionInit(mode:any, options:any) {
     if ( options && options.referenceSpaceType ) {
@@ -103,9 +114,11 @@ function AR(){
       });
 }
 
-function onXRFrame(_t:any, frame:any) {
+function onXRFrame(t:any, frame:any) {
   const session = frame.session;
   session.requestAnimationFrame(onXRFrame);
+  const baseLayer = session.renderState.baseLayer;
+  const pose = frame.getViewerPose(xrRefSpace);
 
   trenderer.render( tscene, tcamera );  
   camera._position.x = scale*movement_scale*tcamera.position.x;
@@ -120,12 +133,12 @@ function onXRFrame(_t:any, frame:any) {
 async function main() {
 
     // standard gaussian splat example
-    const url = "https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat";
-    await SPLAT.Loader.LoadAsync(url, scene, () => {});
+    // const url = "https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat";
+    // await SPLAT.Loader.LoadAsync(url, scene, () => {});
 
     // dreamgaussian example
-    // const url = "/src/fantasy_castle1_model.ply";
-    // const data = await convertPLYToSPLAT(url);
+    const url = "/src/fantasy_castle1_model.ply";
+    const data = await convertPLYToSPLAT(url);
 
     const frame = () => {
         renderer.render(scene, camera);
@@ -148,6 +161,6 @@ button.textContent = 'ENTER AR' ;
 button.style.cssText+= `position: absolute;top:80%;left:40%;width:20%;height:2rem;`;
     
 document.body.appendChild(button)
-button.addEventListener('click',_x=>AR())
+button.addEventListener('click', () =>AR())
 
 main();
