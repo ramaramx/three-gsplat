@@ -1,6 +1,10 @@
+// @ts-nocheck
 import * as SPLAT from "gsplat-fork";
 import * as THREE from "three";
 
+const scale = 1
+const movement_scale = 5
+const initial_z = 14
 
 let trenderer:any, xrRefSpace:any, tscene:any, tcamera:any;
 const scene = new SPLAT.Scene();
@@ -64,7 +68,7 @@ function AR(){
       currentSession = session;
       session.requestReferenceSpace('local').then((refSpace:any) => {
         xrRefSpace = refSpace;
-        session.requestAnimationFrame(XRFrame);
+        session.requestAnimationFrame(onXRFrame);
       });
   }
   function onSessionEnded( /*event*/ ) {
@@ -99,19 +103,19 @@ function AR(){
       });
 }
 
-// function onXRFrame(_t:any, frame:any) {
-//   const session = frame.session;
-//   session.requestAnimationFrame(onXRFrame);
+function onXRFrame(_t:any, frame:any) {
+  const session = frame.session;
+  session.requestAnimationFrame(onXRFrame);
 
-//   trenderer.render( tscene, tcamera );  
-//   camera._position.x = scale*movement_scale*tcamera.position.x;
-//   camera._position.y = -scale*movement_scale*tcamera.position.y-1;
-//   camera._position.z = -scale*movement_scale*tcamera.position.z-initial_z;
-//   camera._rotation.x = tcamera.quaternion.x;
-//   camera._rotation.y = -tcamera.quaternion.y;
-//   camera._rotation.z = -tcamera.quaternion.z;
-//   camera._rotation.w = tcamera.quaternion.w;
-// }
+  trenderer.render( tscene, tcamera );  
+  camera._position.x = scale*movement_scale*tcamera.position.x;
+  camera._position.y = -scale*movement_scale*tcamera.position.y-1;
+  camera._position.z = -scale*movement_scale*tcamera.position.z-initial_z;
+  camera._rotation.x = tcamera.quaternion.x;
+  camera._rotation.y = -tcamera.quaternion.y;
+  camera._rotation.z = -tcamera.quaternion.z;
+  camera._rotation.w = tcamera.quaternion.w;
+}
 
 async function main() {
 
