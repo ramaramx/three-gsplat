@@ -131,11 +131,11 @@ function onXRFrame(t:any, frame:any) {
 async function main() {
 
     // standard gaussian splat example
-    // const url = "https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat";
-    // await SPLAT.Loader.LoadAsync(url, scene, () => {});
+    const url = "https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat";
+    await SPLAT.Loader.LoadAsync(url, scene, () => {});
 
     // dreamgaussian example
-    const url = "/src/fantasy_castle1_model.ply";
+    // const url = "/src/fantasy_castle1_model.ply";
     const data = await convertPLYToSPLAT(url);
 
     const frame = () => {
