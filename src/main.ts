@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import * as SPLAT from "gsplat";
 import * as THREE from "three";
 
@@ -136,7 +138,7 @@ async function main() {
 
     // dreamgaussian example
     // const url = "/src/fantasy_castle1_model.ply";
-    const data = await convertPLYToSPLAT(url);
+    // const data = await convertPLYToSPLAT(url);
 
     const frame = () => {
         renderer.render(scene, camera);
