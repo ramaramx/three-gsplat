@@ -1,17 +1,4 @@
-export { Camera } from "./cameras/Camera";
-export { Scene } from "./core/Scene";
-export { Loader } from "./loaders/Loader";
-export { PLYLoader } from "./loaders/PLYLoader";
-export { WebGLRenderer } from "./renderers/WebGLRenderer";
-export { OrbitControls } from "./controls/OrbitControls";
-export { Quaternion } from "./math/Quaternion";
-export { Vector3 } from "./math/Vector3";
-export { Matrix4 } from "./math/Matrix4";
-export { Matrix3 } from "./math/Matrix3";
-export { ShaderPass } from "./renderers/webgl/passes/ShaderPass";
-export { FadeInPass } from "./renderers/webgl/passes/FadeInPass";
-
-import * as SPLAT from "gsplat";
+import * as SPLAT from "gsplat-fork";
 import * as THREE from "three";
 
 const scale = 1
@@ -30,7 +17,6 @@ const camera = new SPLAT.Camera(
 )
 const renderer = new SPLAT.WebGLRenderer();
 // remove background color from renderer
-renderer.domElement.style.backgroundColor = "unset";
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 async function convertPLYToSPLAT(url: string) {
@@ -145,12 +131,12 @@ function onXRFrame(t:any, frame:any) {
 async function main() {
 
     // standard gaussian splat example
-    // const url = "https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat";
-    // await SPLAT.Loader.LoadAsync(url, scene, () => {});
+    const url = "https://huggingface.co/datasets/dylanebert/3dgs/resolve/main/bonsai/bonsai-7k.splat";
+    await SPLAT.Loader.LoadAsync(url, scene, () => {});
 
     // dreamgaussian example
-    const url = "/src/fantasy_castle1_model.ply";
-    const data = await convertPLYToSPLAT(url);
+    // const url = "/src/fantasy_castle1_model.ply";
+    // const data = await convertPLYToSPLAT(url);
 
     const frame = () => {
         renderer.render(scene, camera);
