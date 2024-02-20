@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "gsplat": "^1.0.6",
-    "three": "^0.161.0"
+    "three": "^0.161.0",
+    "vite-plugin-mkcert": "^1.17.3"
   }
 }
