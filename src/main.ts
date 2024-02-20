@@ -1,9 +1,6 @@
 import * as SPLAT from "gsplat-fork";
 import * as THREE from "three";
 
-const scale = 1
-const movement_scale = 5
-const initial_z = 14
 
 let trenderer:any, xrRefSpace:any, tscene:any, tcamera:any;
 const scene = new SPLAT.Scene();
@@ -19,16 +16,6 @@ const renderer = new SPLAT.WebGLRenderer();
 // remove background color from renderer
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-async function convertPLYToSPLAT(url: string) {
-    // Load PLY file into scene
-    await SPLAT.PLYLoader.LoadAsync(url, scene, (progress:any) => {
-        console.log("Loading ply file: " + progress);
-    });
-    scene.rotate(new SPLAT.Quaternion(-1, 0, 0, 0))
-    scene.scale(new SPLAT.Vector3(12*scale, 12*scale, 12*scale))
-    // Scene.data is in SPLAT format
-    return scene.data;
-}
 
 function getXRSessionInit(mode:any, options:any) {
     if ( options && options.referenceSpaceType ) {
@@ -77,7 +64,7 @@ function AR(){
       currentSession = session;
       session.requestReferenceSpace('local').then((refSpace:any) => {
         xrRefSpace = refSpace;
-        session.requestAnimationFrame(onXRFrame);
+        session.requestAnimationFrame(XRFrame);
       });
   }
   function onSessionEnded( /*event*/ ) {
@@ -112,21 +99,19 @@ function AR(){
       });
 }
 
-function onXRFrame(t:any, frame:any) {
-  const session = frame.session;
-  session.requestAnimationFrame(onXRFrame);
-  const baseLayer = session.renderState.baseLayer;
-  const pose = frame.getViewerPose(xrRefSpace);
+// function onXRFrame(_t:any, frame:any) {
+//   const session = frame.session;
+//   session.requestAnimationFrame(onXRFrame);
 
-  trenderer.render( tscene, tcamera );  
-  camera._position.x = scale*movement_scale*tcamera.position.x;
-  camera._position.y = -scale*movement_scale*tcamera.position.y-1;
-  camera._position.z = -scale*movement_scale*tcamera.position.z-initial_z;
-  camera._rotation.x = tcamera.quaternion.x;
-  camera._rotation.y = -tcamera.quaternion.y;
-  camera._rotation.z = -tcamera.quaternion.z;
-  camera._rotation.w = tcamera.quaternion.w;
-}
+//   trenderer.render( tscene, tcamera );  
+//   camera._position.x = scale*movement_scale*tcamera.position.x;
+//   camera._position.y = -scale*movement_scale*tcamera.position.y-1;
+//   camera._position.z = -scale*movement_scale*tcamera.position.z-initial_z;
+//   camera._rotation.x = tcamera.quaternion.x;
+//   camera._rotation.y = -tcamera.quaternion.y;
+//   camera._rotation.z = -tcamera.quaternion.z;
+//   camera._rotation.w = tcamera.quaternion.w;
+// }
 
 async function main() {
 
@@ -159,6 +144,6 @@ button.textContent = 'ENTER AR' ;
 button.style.cssText+= `position: absolute;top:80%;left:40%;width:20%;height:2rem;`;
     
 document.body.appendChild(button)
-button.addEventListener('click',x=>AR())
+button.addEventListener('click',_x=>AR())
 
 main();
