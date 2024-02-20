@@ -10,7 +10,7 @@ const camera = new SPLAT.Camera();
 const controls = new SPLAT.OrbitControls(camera, canvas);
 
 async function main() {
-    const url = "/src/footballer_model.splat";
+    const url = "/footballer_model.splat";
     await SPLAT.Loader.LoadAsync(url, scene, (progress) => (progressIndicator.value = progress * 100));
     progressDialog.close();
 
